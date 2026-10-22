@@ -1,5 +1,6 @@
 # Online Python compiler (interpreter)
 # Write and run Python online using this editor.
+# asyncio implements asynchronous programming using a single-threaded event loop.
 
 import asyncio
 import time
