@@ -108,3 +108,15 @@ Tell the interviewer:
 > *"In a real production environment, `asyncio.sleep()` is only used for retry backoff algorithms or rate limiting. 
 For actual I/O, we use libraries like `httpx` or `aiohttp` because their core network engines are explicitly written to yield control back to the event loop while waiting for network packets to arrive."*
 
+
+The difference lies in who freezes while waiting.
+time.sleep() freezes your entire program execution thread, 
+whereas asyncio.sleep() only freezes that one specific task, leaving the thread free to work on other things.
+  
+Think of your program like a single chef in a kitchen:
+
+Metric	time.sleep(5) (Blocking)	asyncio.sleep(5) (Pausing / Non-blocking)
+The Analogy	The chef puts water on to boil, stands completely still, and stares at the pot for 5 minutes doing absolutely nothing else.	The chef puts water on to boil, sets a timer, and walks away to chop vegetables while the water heats up.
+System Behavior	Blocks the OS thread. No other line of Python code in your program can run until the timer ends.	Pauses the current function, returns control to the asyncio event loop, and immediately jumps to run other active tasks.
+Resource Usage	Wastes CPU time by forcing it to idle.	Maximizes CPU time by keeping it busy with other waiting work.
+Usage Context	Standard, traditional Python code.	Inside an async def function, right after the await keyword.
